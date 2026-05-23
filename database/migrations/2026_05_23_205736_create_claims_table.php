@@ -31,6 +31,8 @@ return new class extends Migration
 
             $table->text('notes')->nullable();
 
+            $table->index('status');
+
             $table->timestamps();
         });
     }
