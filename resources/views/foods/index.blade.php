@@ -127,7 +127,42 @@
 
                         </p>
 
+                        <p>
+
+                            <span class="font-semibold text-slate-700">
+                                Alamat:
+                            </span>
+
+                            {{ $food->address }}
+
+                        </p>
+
                     </div>
+
+                    {{-- MINI LIVE MAP --}}
+                    @if($food->latitude && $food->longitude)
+
+                        <div
+                            class="
+                                rounded-2xl overflow-hidden
+                                border border-slate-200
+                                mb-5
+                            "
+                        >
+
+                            <iframe
+                                width="100%"
+                                height="200"
+                                style="border:0"
+                                loading="lazy"
+                                allowfullscreen
+                                src="https://maps.google.com/maps?q={{ $food->latitude }},{{ $food->longitude }}&z=15&output=embed"
+                            >
+                            </iframe>
+
+                        </div>
+
+                    @endif
 
                     {{-- ACTION --}}
                     <div class="flex gap-2">

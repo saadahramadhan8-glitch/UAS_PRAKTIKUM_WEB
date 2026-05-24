@@ -2,6 +2,12 @@
 
 @section('content')
 
+{{-- LEAFLET CSS --}}
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+
 <div class="max-w-4xl mx-auto">
 
     {{-- HEADER --}}
@@ -178,42 +184,30 @@
 
             </div>
 
-            {{-- COORDINATE --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- HIDDEN COORDINATE --}}
+            <input
+                type="hidden"
+                name="latitude"
+                id="latitude"
+            >
 
-                {{-- LATITUDE --}}
-                <div>
+            <input
+                type="hidden"
+                name="longitude"
+                id="longitude"
+            >
 
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-                        Latitude
-                    </label>
+            {{-- LIVE MAP --}}
+            <div>
 
-                    <input
-                        type="text"
-                        name="latitude"
-                        value="{{ old('latitude') }}"
-                        placeholder="-0.123456"
-                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
+                <label class="block text-sm font-semibold text-slate-700 mb-3">
+                    Pilih Lokasi di Map
+                </label>
 
-                </div>
-
-                {{-- LONGITUDE --}}
-                <div>
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-                        Longitude
-                    </label>
-
-                    <input
-                        type="text"
-                        name="longitude"
-                        value="{{ old('longitude') }}"
-                        placeholder="119.123456"
-                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-
-                </div>
+                <div
+                    id="map"
+                    class="w-full h-[400px] rounded-3xl border border-slate-200 overflow-hidden"
+                ></div>
 
             </div>
 
@@ -243,5 +237,66 @@
     </div>
 
 </div>
+
+{{-- LEAFLET JS --}}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+    // DEFAULT LOCATION PALU
+    const defaultLat = -0.8917;
+    const defaultLng = 119.8707;
+
+    // MAP INIT
+    const map = L.map('map').setView(
+        [defaultLat, defaultLng],
+        13
+    );
+
+    // TILE
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
+
+    // MARKER
+    let marker = L.marker(
+        [defaultLat, defaultLng],
+        {
+            draggable: true
+        }
+    ).addTo(map);
+
+    // INPUT
+    const latInput = document.getElementById('latitude');
+    const lngInput = document.getElementById('longitude');
+
+    // DEFAULT VALUE
+    latInput.value = defaultLat;
+    lngInput.value = defaultLng;
+
+    // DRAG MARKER
+    marker.on('dragend', function () {
+
+        const position = marker.getLatLng();
+
+        latInput.value = position.lat;
+        lngInput.value = position.lng;
+
+    });
+
+    // CLICK MAP
+    map.on('click', function (e) {
+
+        marker.setLatLng(e.latlng);
+
+        latInput.value = e.latlng.lat;
+        lngInput.value = e.latlng.lng;
+
+    });
+
+</script>
 
 @endsection
