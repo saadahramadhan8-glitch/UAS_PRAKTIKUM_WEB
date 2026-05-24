@@ -16,19 +16,51 @@
 
     <div class="flex min-h-screen">
 
+        {{-- MOBILE OVERLAY --}}
+        <div
+            id="sidebarOverlay"
+            class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
+            onclick="closeSidebar()"
+        ></div>
+
         <!-- SIDEBAR -->
-        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col">
+        <aside
+            id="sidebar"
+            class="
+                fixed lg:static
+                top-0 left-0
+                w-64 h-screen
+                bg-white border-r border-slate-200
+                flex flex-col
+                z-50
+                transform -translate-x-full
+                lg:translate-x-0
+                transition-transform duration-300
+            "
+        >
 
             <!-- LOGO -->
-            <div class="p-6 border-b border-slate-200">
+            <div class="p-6 border-b border-slate-200 flex items-center justify-between">
 
-                <h1 class="text-2xl font-bold text-emerald-500">
-                    PanganLokal
-                </h1>
+                <div>
 
-                <p class="text-sm text-slate-500 mt-1 capitalize">
-                    {{ auth()->user()->role }}
-                </p>
+                    <h1 class="text-2xl font-bold text-emerald-500">
+                        PanganLokal
+                    </h1>
+
+                    <p class="text-sm text-slate-500 mt-1 capitalize">
+                        {{ auth()->user()->role }}
+                    </p>
+
+                </div>
+
+                {{-- CLOSE BUTTON MOBILE --}}
+                <button
+                    onclick="closeSidebar()"
+                    class="lg:hidden text-slate-500 text-2xl"
+                >
+                    ✕
+                </button>
 
             </div>
 
@@ -78,27 +110,39 @@
         </aside>
 
         <!-- MAIN -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col w-full">
 
             <!-- NAVBAR -->
             <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
 
-                <div>
+                <div class="flex items-center gap-4">
 
-                    <h2 class="text-2xl font-bold text-slate-800">
-                        Dashboard
-                    </h2>
+                    {{-- HAMBURGER --}}
+                    <button
+                        onclick="openSidebar()"
+                        class="lg:hidden text-3xl text-slate-700"
+                    >
+                        ☰
+                    </button>
 
-                    <p class="text-sm text-slate-500 mt-1">
-                        Selamat datang kembali 👋
-                    </p>
+                    <div>
+
+                        <h2 class="text-2xl font-bold text-slate-800">
+                            Dashboard
+                        </h2>
+
+                        <p class="text-sm text-slate-500 mt-1">
+                            Selamat datang kembali 👋
+                        </p>
+
+                    </div>
 
                 </div>
 
                 <!-- USER -->
                 <div class="flex items-center gap-3">
 
-                    <div class="text-right">
+                    <div class="text-right hidden sm:block">
 
                         <p class="font-semibold text-slate-800">
                             {{ auth()->user()->name }}
@@ -152,6 +196,29 @@
         </script>
 
     @endif
+
+    {{-- SIDEBAR SCRIPT --}}
+    <script>
+
+        function openSidebar()
+        {
+            document.getElementById('sidebar')
+                .classList.remove('-translate-x-full');
+
+            document.getElementById('sidebarOverlay')
+                .classList.remove('hidden');
+        }
+
+        function closeSidebar()
+        {
+            document.getElementById('sidebar')
+                .classList.add('-translate-x-full');
+
+            document.getElementById('sidebarOverlay')
+                .classList.add('hidden');
+        }
+
+    </script>
 
 </body>
 </html>
