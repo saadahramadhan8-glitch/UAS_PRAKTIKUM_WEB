@@ -12,20 +12,35 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Admin melihat semua makanan
-        if (auth()->user()->role === 'admin') {
+        // Query dasar
+        $query = Food::query();
 
-            $foods = Food::latest()->get();
+        // ROLE FILTER
+        if (auth()->user()->role !== 'admin') {
 
-        } else {
-
-            // Penyedia hanya melihat makanan miliknya
-            $foods = Food::where('user_id', auth()->id())
-                ->latest()
-                ->get();
+            // Penyedia hanya melihat miliknya
+            $query->where('user_id', auth()->id());
         }
+
+        // SEARCH
+        if ($request->search) {
+
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // FILTER STATUS
+        if ($request->status) {
+
+            $query->where('status', $request->status);
+        }
+
+        // PAGINATION
+        $foods = $query
+            ->latest()
+            ->paginate(6)
+            ->withQueryString();
 
         return view('foods.index', compact('foods'));
     }

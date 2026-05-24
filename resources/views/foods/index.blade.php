@@ -2,7 +2,8 @@
 
 @section('content')
 
-<div class="flex justify-between items-center mb-6">
+{{-- HEADER --}}
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
 
     <div>
 
@@ -25,16 +26,87 @@
 
 </div>
 
-{{-- SUCCESS MESSAGE --}}
-@if(session('success'))
+{{-- FILTER --}}
+<div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 mb-6">
 
-    <div class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6">
+    <form
+        method="GET"
+        action="{{ route('foods.index') }}"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4"
+    >
 
-        {{ session('success') }}
+        {{-- SEARCH --}}
+        <div>
 
-    </div>
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Cari makanan..."
+                class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
 
-@endif
+        </div>
+
+        {{-- STATUS --}}
+        <div>
+
+            <select
+                name="status"
+                class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+
+                <option value="">
+                    Semua Status
+                </option>
+
+                <option
+                    value="available"
+                    {{ request('status') == 'available' ? 'selected' : '' }}
+                >
+                    Available
+                </option>
+
+                <option
+                    value="claimed"
+                    {{ request('status') == 'claimed' ? 'selected' : '' }}
+                >
+                    Claimed
+                </option>
+
+                <option
+                    value="expired"
+                    {{ request('status') == 'expired' ? 'selected' : '' }}
+                >
+                    Expired
+                </option>
+
+            </select>
+
+        </div>
+
+        {{-- BUTTON --}}
+        <div class="flex gap-3">
+
+            <button
+                type="submit"
+                class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition"
+            >
+                Filter
+            </button>
+
+            <a
+                href="{{ route('foods.index') }}"
+                class="flex-1 border border-slate-200 text-slate-600 rounded-xl flex items-center justify-center hover:bg-slate-100 transition"
+            >
+                Reset
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
 
 {{-- FOOD LIST --}}
 @if($foods->count() > 0)
@@ -128,10 +200,9 @@
 
                     </div>
 
-                    {{-- ACTION BUTTON --}}
+                    {{-- ACTION --}}
                     <div class="flex gap-2">
 
-                        {{-- DETAIL --}}
                         <a
                             href="{{ route('foods.show', $food->id) }}"
                             class="flex-1 text-center bg-slate-700 hover:bg-slate-800 text-white py-2 rounded-xl transition"
@@ -139,7 +210,6 @@
                             Detail
                         </a>
 
-                        {{-- EDIT --}}
                         <a
                             href="{{ route('foods.edit', $food->id) }}"
                             class="flex-1 text-center bg-orange-400 hover:bg-orange-500 text-white py-2 rounded-xl transition"
@@ -176,29 +246,29 @@
 
     </div>
 
+    {{-- PAGINATION --}}
+    <div class="mt-8">
+
+        {{ $foods->links() }}
+
+    </div>
+
 @else
 
-    {{-- EMPTY STATE --}}
+    {{-- EMPTY --}}
     <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center">
 
         <h2 class="text-2xl font-bold text-slate-800 mb-2">
 
-            Belum Ada Makanan
+            Data Tidak Ditemukan
 
         </h2>
 
         <p class="text-slate-500 mb-6">
 
-            Tambahkan makanan pertama untuk mulai berbagi.
+            Coba gunakan kata kunci atau filter lain.
 
         </p>
-
-        <a
-            href="{{ route('foods.create') }}"
-            class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl transition"
-        >
-            Tambah Makanan
-        </a>
 
     </div>
 
