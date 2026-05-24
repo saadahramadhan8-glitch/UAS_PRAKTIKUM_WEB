@@ -12,58 +12,61 @@
 
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-50 text-slate-800">
 
     <div class="flex min-h-screen">
 
         <!-- SIDEBAR -->
-        <aside class="w-64 bg-white shadow-lg">
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col">
 
-            <div class="p-6 border-b">
+            <!-- LOGO -->
+            <div class="p-6 border-b border-slate-200">
 
-                <h1 class="text-2xl font-bold text-green-600">
+                <h1 class="text-2xl font-bold text-emerald-500">
                     PanganLokal
                 </h1>
 
-                <p class="text-sm text-gray-500 mt-1">
+                <p class="text-sm text-slate-500 mt-1 capitalize">
                     {{ auth()->user()->role }}
                 </p>
 
             </div>
 
-            <nav class="p-4 space-y-2">
+            <!-- MENU -->
+            <nav class="flex-1 p-4 space-y-2">
 
                 <a
                     href="/dashboard"
-                    class="block px-4 py-3 rounded-lg hover:bg-green-100 transition"
+                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
                 >
                     Dashboard
                 </a>
 
                 <a
                     href="/foods"
-                    class="block px-4 py-3 rounded-lg hover:bg-green-100 transition"
+                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
                 >
                     Daftar Makanan
                 </a>
 
                 <a
                     href="/foods/create"
-                    class="block px-4 py-3 rounded-lg hover:bg-green-100 transition"
+                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
                 >
                     Tambah Makanan
                 </a>
 
             </nav>
 
-            <div class="p-4 mt-auto">
+            <!-- LOGOUT -->
+            <div class="p-4 border-t border-slate-200">
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
                     <button
                         type="submit"
-                        class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+                        class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition font-medium"
                     >
                         Logout
                     </button>
@@ -74,32 +77,42 @@
 
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN -->
         <div class="flex-1 flex flex-col">
 
             <!-- NAVBAR -->
-            <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+            <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
 
-                <h2 class="text-xl font-semibold text-gray-700">
-                    Dashboard
-                </h2>
+                <div>
 
+                    <h2 class="text-2xl font-bold text-slate-800">
+                        Dashboard
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        Selamat datang kembali 👋
+                    </p>
+
+                </div>
+
+                <!-- USER -->
                 <div class="flex items-center gap-3">
 
                     <div class="text-right">
 
-                        <p class="font-medium">
+                        <p class="font-semibold text-slate-800">
                             {{ auth()->user()->name }}
                         </p>
 
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-slate-500">
                             {{ auth()->user()->email }}
                         </p>
 
                     </div>
 
+                    <!-- AVATAR -->
                     <div
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold"
+                        class="w-11 h-11 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow"
                     >
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
@@ -109,7 +122,7 @@
             </header>
 
             <!-- CONTENT -->
-            <main class="p-6">
+            <main class="flex-1 p-6">
 
                 @yield('content')
 

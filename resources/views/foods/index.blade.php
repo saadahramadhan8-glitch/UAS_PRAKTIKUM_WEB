@@ -2,80 +2,206 @@
 
 @section('content')
 
-    <h1>Daftar Makanan</h1>
+<div class="flex justify-between items-center mb-6">
 
-    @if(session('success'))
-        <p>
-            {{ session('success') }}
+    <div>
+
+        <h1 class="text-3xl font-bold text-slate-800">
+            Daftar Makanan
+        </h1>
+
+        <p class="text-slate-500 mt-1">
+            Kelola makanan yang tersedia
         </p>
-    @endif
 
-    <a href="{{ route('foods.create') }}">
-        Tambah Makanan
+    </div>
+
+    <a
+        href="{{ route('foods.create') }}"
+        class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl shadow transition"
+    >
+        + Tambah Makanan
     </a>
 
-    <hr>
+</div>
 
-    @forelse($foods as $food)
+{{-- SUCCESS MESSAGE --}}
+@if(session('success'))
 
-        <div style="margin-bottom:20px; border:1px solid #ccc; padding:15px;">
+    <div class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6">
 
-            <h3>{{ $food->title }}</h3>
+        {{ session('success') }}
 
-            <p>{{ $food->description }}</p>
+    </div>
 
-            <p>
-                Jumlah:
-                {{ $food->quantity }}
-            </p>
+@endif
 
-            <p>
-                Status:
-                {{ $food->status }}
-            </p>
+{{-- FOOD LIST --}}
+@if($foods->count() > 0)
 
-            <p>
-                Kadaluarsa:
-                {{ $food->expired_at }}
-            </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-            @if($food->image)
+        @foreach($foods as $food)
 
-                <img
-                    src="{{ asset('storage/' . $food->image) }}"
-                    width="200"
-                >
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden">
 
-            @endif
+                {{-- IMAGE --}}
+                @if($food->image)
 
-            <br><br>
+                    <img
+                        src="{{ asset('storage/' . $food->image) }}"
+                        class="w-full h-52 object-cover"
+                    >
 
-            <a href="{{ route('foods.show', $food->id) }}">
-                Detail
-            </a>
+                @else
 
-            <a href="{{ route('foods.edit', $food->id) }}">
-                Edit
-            </a>
+                    <div class="w-full h-52 bg-slate-100 flex items-center justify-center text-slate-500">
 
-            <form
-                action="{{ route('foods.destroy', $food->id) }}"
-                method="POST"
-            >
-                @csrf
-                @method('DELETE')
+                        Tidak ada gambar
 
-                <button type="submit">
-                    Hapus
-                </button>
-            </form>
+                    </div>
 
-        </div>
+                @endif
 
-    @empty
+                {{-- CONTENT --}}
+                <div class="p-5">
 
-        <p>Belum ada makanan.</p>
+                    {{-- TITLE + STATUS --}}
+                    <div class="flex justify-between items-start mb-3">
 
-    @endforelse
+                        <h2 class="text-xl font-bold text-slate-800">
+
+                            {{ $food->title }}
+
+                        </h2>
+
+                        {{-- STATUS --}}
+                        <span class="
+                            px-3 py-1 rounded-full text-sm font-medium
+
+                            @if($food->status == 'available')
+                                bg-emerald-100 text-emerald-700
+
+                            @elseif($food->status == 'claimed')
+                                bg-orange-100 text-orange-500
+
+                            @else
+                                bg-red-100 text-red-500
+                            @endif
+                        ">
+
+                            {{ ucfirst($food->status) }}
+
+                        </span>
+
+                    </div>
+
+                    {{-- DESCRIPTION --}}
+                    <p class="text-slate-500 mb-4 line-clamp-3">
+
+                        {{ $food->description }}
+
+                    </p>
+
+                    {{-- INFO --}}
+                    <div class="space-y-2 text-sm text-slate-500 mb-5">
+
+                        <p>
+
+                            <span class="font-semibold text-slate-700">
+                                Jumlah:
+                            </span>
+
+                            {{ $food->quantity }}
+
+                        </p>
+
+                        <p>
+
+                            <span class="font-semibold text-slate-700">
+                                Kadaluarsa:
+                            </span>
+
+                            {{ $food->expired_at }}
+
+                        </p>
+
+                    </div>
+
+                    {{-- ACTION BUTTON --}}
+                    <div class="flex gap-2">
+
+                        {{-- DETAIL --}}
+                        <a
+                            href="{{ route('foods.show', $food->id) }}"
+                            class="flex-1 text-center bg-slate-700 hover:bg-slate-800 text-white py-2 rounded-xl transition"
+                        >
+                            Detail
+                        </a>
+
+                        {{-- EDIT --}}
+                        <a
+                            href="{{ route('foods.edit', $food->id) }}"
+                            class="flex-1 text-center bg-orange-400 hover:bg-orange-500 text-white py-2 rounded-xl transition"
+                        >
+                            Edit
+                        </a>
+
+                    </div>
+
+                    {{-- DELETE --}}
+                    <form
+                        action="{{ route('foods.destroy', $food->id) }}"
+                        method="POST"
+                        class="mt-3"
+                    >
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            type="submit"
+                            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl transition"
+                        >
+                            Hapus
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        @endforeach
+
+    </div>
+
+@else
+
+    {{-- EMPTY STATE --}}
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center">
+
+        <h2 class="text-2xl font-bold text-slate-800 mb-2">
+
+            Belum Ada Makanan
+
+        </h2>
+
+        <p class="text-slate-500 mb-6">
+
+            Tambahkan makanan pertama untuk mulai berbagi.
+
+        </p>
+
+        <a
+            href="{{ route('foods.create') }}"
+            class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl transition"
+        >
+            Tambah Makanan
+        </a>
+
+    </div>
+
+@endif
 
 @endsection
