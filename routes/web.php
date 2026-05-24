@@ -54,7 +54,110 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
 
-        return view('dashboard.admin');
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL DATA
+        |--------------------------------------------------------------------------
+        */
+
+        $totalFoods = \App\Models\Food::count();
+
+        $totalClaims = \App\Models\Claim::count();
+
+        $totalProviders = \App\Models\User::where(
+
+            'role',
+
+            'penyedia'
+
+        )->count();
+
+        $totalReceivers = \App\Models\User::where(
+
+            'role',
+
+            'penerima'
+
+        )->count();
+
+        /*
+        |--------------------------------------------------------------------------
+        | CLAIM STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        $pendingClaims = \App\Models\Claim::where(
+
+            'status',
+
+            'pending'
+
+        )->count();
+
+        $approvedClaims = \App\Models\Claim::where(
+
+            'status',
+
+            'disetujui'
+
+        )->count();
+
+        /*
+        |--------------------------------------------------------------------------
+        | RECENT CLAIMS
+        |--------------------------------------------------------------------------
+        */
+
+        $recentClaims = \App\Models\Claim::with([
+
+            'food',
+            'user'
+
+        ])
+
+        ->latest()
+
+        ->take(5)
+
+        ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | RECENT FOODS
+        |--------------------------------------------------------------------------
+        */
+
+        $recentFoods = \App\Models\Food::latest()
+
+            ->take(5)
+
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view('dashboard.admin', [
+
+            'totalFoods' => $totalFoods,
+
+            'totalClaims' => $totalClaims,
+
+            'totalProviders' => $totalProviders,
+
+            'totalReceivers' => $totalReceivers,
+
+            'pendingClaims' => $pendingClaims,
+
+            'approvedClaims' => $approvedClaims,
+
+            'recentClaims' => $recentClaims,
+
+            'recentFoods' => $recentFoods,
+
+        ]);
 
     });
 
