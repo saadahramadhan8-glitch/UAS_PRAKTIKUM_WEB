@@ -63,13 +63,27 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:penyedia'])->group(function () {
+Route::get('/penyedia/dashboard', function () {
 
-    Route::get('/penyedia/dashboard', function () {
+    $foods = \App\Models\Food::where('user_id', auth()->id());
 
-        return view('dashboard.penyedia');
+    return view('dashboard.penyedia', [
 
-    });
+        'totalFoods' => $foods->count(),
+
+        'availableFoods' => (clone $foods)
+            ->where('status', 'available')
+            ->count(),
+
+        'claimedFoods' => (clone $foods)
+            ->where('status', 'claimed')
+            ->count(),
+
+        'expiredFoods' => (clone $foods)
+            ->where('status', 'expired')
+            ->count(),
+
+    ]);
 
 });
 
