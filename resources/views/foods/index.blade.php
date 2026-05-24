@@ -127,7 +127,7 @@
 
                 @else
 
-                    <div class="w-full h-52 bg-slate-100 flex items-center justify-center text-slate-500">
+                    <div class="w-full h-52 bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
 
                         Tidak ada gambar
 
@@ -147,7 +147,6 @@
 
                         </h2>
 
-                        {{-- STATUS --}}
                         <span class="
                             px-3 py-1 rounded-full text-sm font-medium
 
@@ -255,20 +254,36 @@
 
 @else
 
-    {{-- EMPTY --}}
-    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center">
+    {{-- EMPTY STATE --}}
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-14 text-center">
 
-        <h2 class="text-2xl font-bold text-slate-800 mb-2">
+        {{-- ICON --}}
+        <div class="text-7xl mb-6">
+            🍱
+        </div>
 
-            Data Tidak Ditemukan
+        {{-- TITLE --}}
+        <h2 class="text-3xl font-bold text-slate-800 mb-3">
+
+            Belum Ada Makanan
 
         </h2>
 
-        <p class="text-slate-500 mb-6">
+        {{-- DESCRIPTION --}}
+        <p class="text-slate-500 max-w-xl mx-auto mb-8 leading-relaxed">
 
-            Coba gunakan kata kunci atau filter lain.
+            Saat ini belum ada makanan yang tersedia.
+            Mulailah berbagi makanan untuk membantu orang di sekitar.
 
         </p>
+
+        {{-- BUTTON --}}
+        <a
+            href="{{ route('foods.create') }}"
+            class="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-2xl transition shadow"
+        >
+            + Tambah Makanan Pertama
+        </a>
 
     </div>
 

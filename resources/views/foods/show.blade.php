@@ -2,200 +2,192 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto">
+<div class="max-w-6xl mx-auto">
 
-    {{-- HEADER --}}
-    <div class="mb-6 flex justify-between items-center">
+    {{-- BACK BUTTON --}}
+    <div class="mb-6">
 
-        <div>
-
-            <h1 class="text-3xl font-bold text-slate-800">
-                Detail Makanan
-            </h1>
-
-            <p class="text-slate-500 mt-1">
-                Informasi lengkap makanan yang tersedia.
-            </p>
-
-        </div>
-
-        {{-- STATUS --}}
-        <span class="
-            px-4 py-2 rounded-full text-sm font-semibold
-
-            @if($food->status == 'available')
-                bg-emerald-100 text-emerald-700
-
-            @elseif($food->status == 'claimed')
-                bg-orange-100 text-orange-500
-
-            @else
-                bg-red-100 text-red-500
-            @endif
-        ">
-
-            {{ ucfirst($food->status) }}
-
-        </span>
+        <a
+            href="{{ route('foods.index') }}"
+            class="inline-flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition"
+        >
+            ← Kembali ke daftar makanan
+        </a>
 
     </div>
 
     {{-- CARD --}}
-    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
 
-        {{-- IMAGE --}}
-        @if($food->image)
+        <div class="grid grid-cols-1 lg:grid-cols-2">
 
-            <img
-                src="{{ asset('storage/' . $food->image) }}"
-                class="w-full h-96 object-cover cursor-pointer hover:opacity-90 transition"
-                onclick="openImageModal('{{ asset('storage/' . $food->image) }}')"
-            >
+            {{-- IMAGE --}}
+            <div class="bg-slate-100">
 
-        @else
+                @if($food->image)
 
-            <div class="w-full h-96 bg-slate-100 flex items-center justify-center text-slate-500">
+                    <img
+                        src="{{ asset('storage/' . $food->image) }}"
+                        alt="{{ $food->title }}"
+                        class="w-full h-full object-cover"
+                    >
 
-                Tidak ada gambar
+                @else
+
+                    <div class="h-full min-h-[400px] flex items-center justify-center text-slate-400 text-xl">
+
+                        Tidak ada gambar
+
+                    </div>
+
+                @endif
 
             </div>
 
-        @endif
+            {{-- CONTENT --}}
+            <div class="p-8 lg:p-10">
 
-        {{-- CONTENT --}}
-        <div class="p-8">
+                {{-- STATUS --}}
+                <div class="mb-4">
 
-            {{-- TITLE --}}
-            <div class="mb-6">
+                    <span class="
+                        px-4 py-2 rounded-full text-sm font-semibold
 
-                <h2 class="text-3xl font-bold text-slate-800 mb-2">
+                        @if($food->status == 'available')
+                            bg-emerald-100 text-emerald-700
+
+                        @elseif($food->status == 'claimed')
+                            bg-orange-100 text-orange-500
+
+                        @elseif($food->status == 'pending_verification')
+                            bg-yellow-100 text-yellow-600
+
+                        @else
+                            bg-red-100 text-red-500
+                        @endif
+                    ">
+
+                        {{ ucfirst(str_replace('_', ' ', $food->status)) }}
+
+                    </span>
+
+                </div>
+
+                {{-- TITLE --}}
+                <h1 class="text-4xl font-bold text-slate-800 mb-4">
 
                     {{ $food->title }}
 
-                </h2>
+                </h1>
 
-                <p class="text-slate-500 leading-relaxed">
+                {{-- DESCRIPTION --}}
+                <p class="text-slate-500 leading-relaxed mb-8">
 
                     {{ $food->description }}
 
                 </p>
 
-            </div>
+                {{-- INFO --}}
+                <div class="space-y-5 mb-8">
 
-            {{-- INFO GRID --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    {{-- QUANTITY --}}
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
 
-                {{-- QUANTITY --}}
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <span class="text-slate-500">
+                            Jumlah
+                        </span>
 
-                    <p class="text-sm text-slate-500 mb-1">
-                        Jumlah
-                    </p>
+                        <span class="font-semibold text-slate-800">
+                            {{ $food->quantity }}
+                        </span>
 
-                    <h3 class="text-2xl font-bold text-slate-800">
+                    </div>
 
-                        {{ $food->quantity }}
+                    {{-- EXPIRED --}}
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
 
-                    </h3>
+                        <span class="text-slate-500">
+                            Batas Konsumsi
+                        </span>
 
-                </div>
+                        <span class="font-semibold text-slate-800">
+                            {{ $food->expired_at }}
+                        </span>
 
-                {{-- EXPIRED --}}
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                    </div>
 
-                    <p class="text-sm text-slate-500 mb-1">
-                        Batas Konsumsi
-                    </p>
+                    {{-- ADDRESS --}}
+                    <div class="flex justify-between items-start border-b border-slate-100 pb-4 gap-6">
 
-                    <h3 class="text-lg font-semibold text-slate-800">
+                        <span class="text-slate-500">
+                            Alamat
+                        </span>
 
-                        {{ $food->expired_at }}
+                        <span class="font-semibold text-slate-800 text-right">
+                            {{ $food->address }}
+                        </span>
 
-                    </h3>
+                    </div>
 
-                </div>
+                    {{-- LATITUDE --}}
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
 
-            </div>
+                        <span class="text-slate-500">
+                            Latitude
+                        </span>
 
-            {{-- ADDRESS --}}
-            <div class="mb-8">
+                        <span class="font-semibold text-slate-800">
+                            {{ $food->latitude ?? '-' }}
+                        </span>
 
-                <h3 class="text-xl font-bold text-slate-800 mb-3">
-                    Lokasi
-                </h3>
+                    </div>
 
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                    {{-- LONGITUDE --}}
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
 
-                    <p class="text-slate-700 mb-3">
+                        <span class="text-slate-500">
+                            Longitude
+                        </span>
 
-                        {{ $food->address }}
-
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-500">
-
-                        <p>
-
-                            <span class="font-semibold text-slate-700">
-                                Latitude:
-                            </span>
-
-                            {{ $food->latitude }}
-
-                        </p>
-
-                        <p>
-
-                            <span class="font-semibold text-slate-700">
-                                Longitude:
-                            </span>
-
-                            {{ $food->longitude }}
-
-                        </p>
+                        <span class="font-semibold text-slate-800">
+                            {{ $food->longitude ?? '-' }}
+                        </span>
 
                     </div>
 
                 </div>
 
-            </div>
+                {{-- ACTION BUTTONS --}}
+                <div class="flex flex-col sm:flex-row gap-4">
 
-            {{-- ACTION BUTTON --}}
-            <div class="flex flex-wrap gap-3">
-
-                {{-- BACK --}}
-                <a
-                    href="{{ route('foods.index') }}"
-                    class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition"
-                >
-                    Kembali
-                </a>
-
-                {{-- EDIT --}}
-                <a
-                    href="{{ route('foods.edit', $food->id) }}"
-                    class="bg-orange-400 hover:bg-orange-500 text-white px-6 py-3 rounded-xl transition"
-                >
-                    Edit
-                </a>
-
-                {{-- DELETE --}}
-                <form
-                    action="{{ route('foods.destroy', $food->id) }}"
-                    method="POST"
-                >
-
-                    @csrf
-                    @method('DELETE')
-
-                    <button
-                        type="submit"
-                        class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition"
+                    {{-- EDIT --}}
+                    <a
+                        href="{{ route('foods.edit', $food->id) }}"
+                        class="flex-1 bg-orange-400 hover:bg-orange-500 text-white text-center py-3 rounded-2xl transition"
                     >
-                        Hapus
-                    </button>
+                        Edit Makanan
+                    </a>
 
-                </form>
+                    {{-- DELETE --}}
+                    <form
+                        action="{{ route('foods.destroy', $food->id) }}"
+                        method="POST"
+                        class="flex-1 delete-form"
+                    >
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            type="submit"
+                            class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-2xl transition"
+                        >
+                            Hapus Makanan
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
@@ -205,37 +197,42 @@
 
 </div>
 
-{{-- IMAGE MODAL --}}
-<div
-    id="imageModal"
-    class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-5"
-    onclick="closeImageModal()"
->
-
-    <img
-        id="modalImage"
-        class="max-w-full max-h-full rounded-2xl shadow-2xl"
-    >
-
-</div>
-
+{{-- SWEET ALERT --}}
 <script>
 
-    function openImageModal(imageUrl)
-    {
-        document.getElementById('imageModal').classList.remove('hidden');
+    document.querySelectorAll('.delete-form').forEach(form => {
 
-        document.getElementById('imageModal').classList.add('flex');
+        form.addEventListener('submit', function(e) {
 
-        document.getElementById('modalImage').src = imageUrl;
-    }
+            e.preventDefault();
 
-    function closeImageModal()
-    {
-        document.getElementById('imageModal').classList.add('hidden');
+            Swal.fire({
 
-        document.getElementById('imageModal').classList.remove('flex');
-    }
+                title: 'Hapus makanan?',
+                text: 'Data yang dihapus tidak dapat dikembalikan.',
+                icon: 'warning',
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#64748B',
+
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    form.submit();
+
+                }
+
+            });
+
+        });
+
+    });
 
 </script>
 

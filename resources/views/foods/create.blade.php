@@ -5,20 +5,20 @@
 <div class="max-w-4xl mx-auto">
 
     {{-- HEADER --}}
-    <div class="mb-6">
+    <div class="mb-8">
 
         <h1 class="text-3xl font-bold text-slate-800">
             Tambah Makanan
         </h1>
 
         <p class="text-slate-500 mt-1">
-            Tambahkan makanan untuk dibagikan kepada penerima.
+            Bagikan makanan layak konsumsi untuk membantu sesama.
         </p>
 
     </div>
 
     {{-- FORM CARD --}}
-    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
 
         <form
             action="{{ route('foods.store') }}"
@@ -40,8 +40,8 @@
                     type="text"
                     name="title"
                     value="{{ old('title') }}"
-                    placeholder="Contoh: Nasi Goreng"
-                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="Contoh: Nasi Kotak Ayam"
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
 
                 @error('title')
@@ -64,8 +64,8 @@
                 <textarea
                     name="description"
                     rows="5"
-                    placeholder="Deskripsikan makanan..."
-                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="Jelaskan kondisi makanan..."
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >{{ old('description') }}</textarea>
 
                 @error('description')
@@ -93,7 +93,7 @@
                         name="quantity"
                         value="{{ old('quantity') }}"
                         placeholder="Contoh: 10"
-                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
 
                     @error('quantity')
@@ -116,7 +116,7 @@
                     <input
                         type="datetime-local"
                         name="expired_at"
-                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
 
                     @error('expired_at')
@@ -141,7 +141,7 @@
                 <input
                     type="file"
                     name="image"
-                    class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50"
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 bg-white"
                 >
 
                 @error('image')
@@ -164,8 +164,8 @@
                 <textarea
                     name="address"
                     rows="4"
-                    placeholder="Masukkan alamat lokasi makanan..."
-                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="Masukkan alamat lengkap..."
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >{{ old('address') }}</textarea>
 
                 @error('address')
@@ -178,7 +178,7 @@
 
             </div>
 
-            {{-- LOCATION --}}
+            {{-- COORDINATE --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 {{-- LATITUDE --}}
@@ -193,7 +193,7 @@
                         name="latitude"
                         value="{{ old('latitude') }}"
                         placeholder="-0.123456"
-                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
 
                 </div>
@@ -210,7 +210,7 @@
                         name="longitude"
                         value="{{ old('longitude') }}"
                         placeholder="119.123456"
-                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
 
                 </div>
@@ -218,21 +218,23 @@
             </div>
 
             {{-- BUTTON --}}
-            <div class="flex justify-end gap-3 pt-4">
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
 
-                <a
-                    href="{{ route('foods.index') }}"
-                    class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition"
-                >
-                    Batal
-                </a>
-
+                {{-- SAVE --}}
                 <button
                     type="submit"
-                    class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl transition shadow-sm"
+                    class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl transition font-medium"
                 >
                     Simpan Makanan
                 </button>
+
+                {{-- CANCEL --}}
+                <a
+                    href="{{ route('foods.index') }}"
+                    class="flex-1 border border-slate-200 text-slate-700 py-4 rounded-2xl text-center hover:bg-slate-100 transition font-medium"
+                >
+                    Batal
+                </a>
 
             </div>
 
