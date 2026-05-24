@@ -23,8 +23,7 @@
             onclick="closeSidebar()"
         ></div>
 
-        <!-- SIDEBAR -->
-
+        {{-- SIDEBAR --}}
         <aside
             id="sidebar"
             class="
@@ -40,16 +39,12 @@
             "
         >
 
-            <!-- LOGO -->
-            <div class="p-6 border-b border-slate-200 flex items-center justify-between">
-
-        <aside class="w-64 bg-white shadow-lg flex flex-col">
-
-            <!-- LOGO -->
-            <div class="p-6 border-b">
+            {{-- LOGO --}}
+            <div
+                class="p-6 border-b border-slate-200 flex items-center justify-between"
+            >
 
                 <div>
-
 
                     <h1 class="text-2xl font-bold text-emerald-500">
                         PanganLokal
@@ -68,21 +63,15 @@
                 >
                     ✕
                 </button>
-                <p class="text-sm text-gray-500 mt-1 capitalize">
-                    {{ auth()->user()->role }}
-                </p>
 
             </div>
 
-            <!-- MENU -->
+            {{-- MENU --}}
             <nav class="flex-1 p-4 space-y-2">
-
-            <nav class="p-4 space-y-2 flex-1">
 
                 {{-- DASHBOARD --}}
                 <a
                     href="/dashboard"
-
                     class="
                         block px-4 py-3 rounded-xl transition font-medium
 
@@ -91,9 +80,6 @@
                             : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
                         }}
                     "
-
-                    class="block px-4 py-3 rounded-xl hover:bg-green-100 hover:text-green-700 transition"
-
                 >
                     Dashboard
                 </a>
@@ -109,31 +95,11 @@
                             : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
                         }}
                     "
-
-                {{-- FOOD LIST --}}
-                <a
-                    href="/foods"
-                    class="block px-4 py-3 rounded-xl hover:bg-green-100 hover:text-green-700 transition"
                 >
                     Daftar Makanan
                 </a>
 
-                {{-- TAMBAH MAKANAN --}}
-                <a
-                    href="/foods/create"
-                    class="
-                        block px-4 py-3 rounded-xl transition font-medium
-
-                        {{ request()->is('foods/create')
-                            ? 'bg-emerald-500 text-white shadow'
-                            : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
-                        }}
-                    "
-                >
-                    Tambah Makanan
-                </a>
-
-                {{-- ONLY ADMIN & PENYEDIA --}}
+                {{-- ADMIN & PENYEDIA --}}
                 @if(
                     auth()->user()->role === 'admin'
                     ||
@@ -142,7 +108,14 @@
 
                     <a
                         href="/foods/create"
-                        class="block px-4 py-3 rounded-xl hover:bg-green-100 hover:text-green-700 transition"
+                        class="
+                            block px-4 py-3 rounded-xl transition font-medium
+
+                            {{ request()->is('foods/create')
+                                ? 'bg-emerald-500 text-white shadow'
+                                : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                            }}
+                        "
                     >
                         Tambah Makanan
                     </a>
@@ -151,11 +124,8 @@
 
             </nav>
 
-            <!-- LOGOUT -->
-
+            {{-- LOGOUT --}}
             <div class="p-4 border-t border-slate-200">
-
-            <div class="p-4 border-t">
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -163,9 +133,6 @@
                     <button
                         type="submit"
                         class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition font-medium"
-
-                        class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition shadow-md"
-
                     >
                         Logout
                     </button>
@@ -176,14 +143,12 @@
 
         </aside>
 
-        <!-- MAIN -->
+        {{-- MAIN --}}
         <div class="flex-1 flex flex-col w-full">
 
-            <!-- NAVBAR -->
-            <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-
+            {{-- NAVBAR --}}
             <header
-                class="bg-white shadow px-6 py-4 flex justify-between items-center"
+                class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center"
             >
 
                 <div class="flex items-center gap-4">
@@ -210,18 +175,12 @@
 
                 </div>
 
-                <!-- USER -->
-                <div class="flex items-center gap-3">
-
-                <!-- USER INFO -->
+                {{-- USER --}}
                 <div class="flex items-center gap-4">
 
                     <div class="text-right hidden sm:block">
 
                         <p class="font-semibold text-slate-800">
-
-                        <p class="font-semibold text-gray-800">
-
                             {{ auth()->user()->name }}
                         </p>
 
@@ -231,12 +190,9 @@
 
                     </div>
 
-                    <!-- AVATAR -->
+                    {{-- AVATAR --}}
                     <div
-
                         class="w-11 h-11 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow"
-
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold shadow"
                     >
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
@@ -245,10 +201,8 @@
 
             </header>
 
-            <!-- CONTENT -->
+            {{-- CONTENT --}}
             <main class="flex-1 p-6">
-            <!-- PAGE CONTENT -->
-            <main class="p-6">
 
                 @yield('content')
 
@@ -257,27 +211,6 @@
         </div>
 
     </div>
-
-    {{-- TOAST SUCCESS --}}
-    @if(session('success'))
-
-        <script>
-
-            Swal.fire({
-
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-
-            });
-
-        </script>
-
-    @endif
 
     {{-- SIDEBAR SCRIPT --}}
     <script>
