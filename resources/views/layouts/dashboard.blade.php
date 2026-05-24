@@ -12,9 +12,9 @@
 
 </head>
 
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 overflow-hidden">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
 
         {{-- MOBILE OVERLAY --}}
         <div
@@ -90,8 +90,19 @@
                     class="
                         block px-4 py-3 rounded-xl transition font-medium
 
-                        {{ request()->is('foods') || request()->is('foods/*')
+                        {{
+                            request()->is('foods')
+                            ||
+                            request()->is('foods/')
+                            ||
+                            request()->routeIs('foods.index')
+                            ||
+                            request()->routeIs('foods.show')
+                            ||
+                            request()->routeIs('foods.edit')
+
                             ? 'bg-emerald-500 text-white shadow'
+
                             : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
                         }}
                     "
@@ -149,8 +160,11 @@
                         class="
                             block px-4 py-3 rounded-xl transition font-medium
 
-                            {{ request()->is('foods/create')
+                            {{
+                                request()->routeIs('foods.create')
+
                                 ? 'bg-emerald-500 text-white shadow'
+
                                 : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
                             }}
                         "
@@ -160,8 +174,8 @@
 
                 @endif
 
-            </nav>
-
+                </nav>
+                
             {{-- LOGOUT --}}
             <div class="p-4 border-t border-slate-200">
 
@@ -182,7 +196,7 @@
         </aside>
 
         {{-- MAIN --}}
-        <div class="flex-1 flex flex-col w-full">
+        <div class="flex-1 flex flex-col w-full overflow-hidden">
 
             {{-- NAVBAR --}}
             <header
@@ -255,7 +269,7 @@
             </header>
 
             {{-- CONTENT --}}
-            <main class="flex-1 p-6">
+            <main class="flex-1 p-6 overflow-y-auto">
 
                 @yield('content')
 
