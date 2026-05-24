@@ -129,6 +129,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('foods', FoodController::class);
 
+    Route::get(
+        '/available-foods',
+        [FoodController::class, 'availableFoods']
+    )->name('foods.available');
+
 });
 
 /*

@@ -186,6 +186,163 @@
                         </button>
 
                     </form>
+    <div class="max-w-5xl mx-auto">
+
+        {{-- HEADER --}}
+        <div class="mb-8 flex items-center justify-between">
+
+            <div>
+
+                <h1 class="text-3xl font-bold text-gray-800">
+                    Detail Makanan
+                </h1>
+
+                <p class="text-gray-500 mt-2">
+                    Informasi lengkap makanan tersedia
+                </p>
+
+            </div>
+
+            <a
+                href="{{ route('foods.index') }}"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-3 rounded-xl transition"
+            >
+                Kembali
+            </a>
+
+        </div>
+
+        {{-- CARD --}}
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+            <div class="md:flex">
+
+                {{-- IMAGE --}}
+                <div class="md:w-1/2 bg-gray-100">
+
+                    @if($food->image)
+
+                        <img
+                            src="{{ asset('storage/' . $food->image) }}"
+                            class="w-full h-full object-cover"
+                        >
+
+                    @else
+
+                        <div
+                            class="w-full h-full flex items-center justify-center text-gray-500 p-10"
+                        >
+                            Tidak ada gambar
+                        </div>
+
+                    @endif
+
+                </div>
+
+                {{-- CONTENT --}}
+                <div class="p-8 flex-1">
+
+                    <div class="flex items-start justify-between">
+
+                        <h2 class="text-3xl font-bold text-gray-800">
+                            {{ $food->title }}
+                        </h2>
+
+                        <span
+                            class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium"
+                        >
+                            {{ $food->status }}
+                        </span>
+
+                    </div>
+
+                    <div class="mt-6 space-y-5">
+
+                        {{-- DESCRIPTION --}}
+                        <div>
+
+                            <h3 class="font-semibold text-gray-700 mb-2">
+                                Deskripsi
+                            </h3>
+
+                            <p class="text-gray-600 leading-relaxed">
+                                {{ $food->description }}
+                            </p>
+
+                        </div>
+
+                        {{-- QUANTITY --}}
+                        <div>
+
+                            <h3 class="font-semibold text-gray-700 mb-2">
+                                Jumlah
+                            </h3>
+
+                            <p class="text-gray-600">
+                                {{ $food->quantity }}
+                            </p>
+
+                        </div>
+
+                        {{-- ADDRESS --}}
+                        <div>
+
+                            <h3 class="font-semibold text-gray-700 mb-2">
+                                Alamat
+                            </h3>
+
+                            <p class="text-gray-600">
+                                {{ $food->address }}
+                            </p>
+
+                        </div>
+
+                        {{-- EXPIRED --}}
+                        <div>
+
+                            <h3 class="font-semibold text-gray-700 mb-2">
+                                Batas Konsumsi
+                            </h3>
+
+                            <p class="text-gray-600">
+                                {{ $food->expired_at }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {{-- ACTION --}}
+                    <div class="mt-8 flex flex-wrap gap-4">
+
+                        {{-- ADMIN / OWNER --}}
+                        @if(
+                            auth()->user()->role === 'admin'
+                            ||
+                            auth()->user()->id === $food->user_id
+                        )
+
+                            <a
+                                href="{{ route('foods.edit', $food->id) }}"
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-xl transition"
+                            >
+                                Edit
+                            </a>
+
+                        @endif
+
+                        {{-- PENERIMA --}}
+                        @if(auth()->user()->role === 'penerima')
+
+                            <button
+                                class="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl transition"
+                            >
+                                Claim Makanan
+                            </button>
+
+                        @endif
+
+                    </div>
 
                 </div>
 

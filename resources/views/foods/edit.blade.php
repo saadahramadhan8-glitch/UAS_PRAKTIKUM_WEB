@@ -258,4 +258,248 @@
 
 </div>
 
+    <div class="max-w-4xl mx-auto">
+
+        {{-- HEADER --}}
+        <div class="mb-8">
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Edit Makanan
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Perbarui informasi makanan yang tersedia
+            </p>
+
+        </div>
+
+        {{-- FORM CARD --}}
+        <div class="bg-white shadow-lg rounded-2xl p-8">
+
+            <form
+                action="{{ route('foods.update', $food->id) }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="space-y-6"
+            >
+
+                @csrf
+                @method('PUT')
+
+                {{-- TITLE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Judul Makanan
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ old('title', $food->title) }}"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
+
+                    @error('title')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- DESCRIPTION --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Deskripsi
+                    </label>
+
+                    <textarea
+                        name="description"
+                        rows="5"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >{{ old('description', $food->description) }}</textarea>
+
+                    @error('description')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- QUANTITY --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Jumlah
+                    </label>
+
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="{{ old('quantity', $food->quantity) }}"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
+
+                    @error('quantity')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- EXPIRED --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Batas Konsumsi
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        name="expired_at"
+                        value="{{ old('expired_at', \Carbon\Carbon::parse($food->expired_at)->format('Y-m-d\\TH:i')) }}"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
+
+                    @error('expired_at')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- CURRENT IMAGE --}}
+                @if($food->image)
+
+                    <div>
+
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Foto Saat Ini
+                        </label>
+
+                        <img
+                            src="{{ asset('storage/' . $food->image) }}"
+                            class="w-64 rounded-2xl shadow-md"
+                        >
+
+                    </div>
+
+                @endif
+
+                {{-- NEW IMAGE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Foto Baru
+                    </label>
+
+                    <input
+                        type="file"
+                        name="image"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white"
+                    >
+
+                    @error('image')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- ADDRESS --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Alamat
+                    </label>
+
+                    <textarea
+                        name="address"
+                        rows="3"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >{{ old('address', $food->address) }}</textarea>
+
+                    @error('address')
+
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+                {{-- LATITUDE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Latitude
+                    </label>
+
+                    <input
+                        type="text"
+                        name="latitude"
+                        value="{{ old('latitude', $food->latitude) }}"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
+
+                </div>
+
+                {{-- LONGITUDE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Longitude
+                    </label>
+
+                    <input
+                        type="text"
+                        name="longitude"
+                        value="{{ old('longitude', $food->longitude) }}"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
+
+                </div>
+
+                {{-- BUTTON --}}
+                <div class="pt-4 flex gap-4">
+
+                    <button
+                        type="submit"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl shadow-md transition"
+                    >
+                        Update Makanan
+                    </button>
+
+                    <a
+                        href="{{ route('foods.index') }}"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded-xl transition"
+                    >
+                        Kembali
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 @endsection

@@ -20,8 +20,29 @@ class FoodController extends Controller
         // ROLE FILTER
         if (auth()->user()->role !== 'admin') {
 
+
             // Penyedia hanya melihat miliknya
             $query->where('user_id', auth()->id());
+
+        }
+
+        // Penyedia melihat makanan miliknya
+        elseif (auth()->user()->role === 'penyedia') {
+
+            $foods = Food::where('user_id', auth()->id())
+                ->where('status', 'tersedia')
+                ->latest()
+                ->get();
+
+        }
+
+        // Penerima & kurir melihat makanan tersedia
+        else {
+
+            $foods = Food::where('status', 'tersedia')
+                ->latest()
+                ->get();
+
         }
 
         // SEARCH
@@ -50,6 +71,20 @@ class FoodController extends Controller
      */
     public function create()
     {
+        // Hanya admin & penyedia
+        if (
+
+            auth()->user()->role !== 'admin'
+            &&
+
+            auth()->user()->role !== 'penyedia'
+
+        ) {
+
+            abort(403, 'Akses ditolak');
+
+        }
+
         return view('foods.create');
     }
 
@@ -58,13 +93,28 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        // Simpan gambar jika ada
+        // Hanya admin & penyedia
+        if (
+
+            auth()->user()->role !== 'admin'
+            &&
+
+            auth()->user()->role !== 'penyedia'
+
+        ) {
+
+            abort(403, 'Akses ditolak');
+
+        }
+
+        // Upload gambar
         $imagePath = null;
 
         if ($request->hasFile('image')) {
 
             $imagePath = $request->file('image')
                 ->store('foods', 'public');
+
         }
 
         // Simpan makanan
@@ -82,7 +132,7 @@ class FoodController extends Controller
 
             'image' => $imagePath,
 
-            'status' => 'pending_verification',
+            'status' => 'tersedia',
 
             'address' => $request->address,
 
@@ -110,6 +160,8 @@ class FoodController extends Controller
      */
     public function edit(Food $food)
     {
+        $this->authorizeFood($food);
+
         return view('foods.edit', compact('food'));
     }
 
@@ -118,16 +170,21 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Food $food)
     {
-        // Update gambar jika ada
+        $this->authorizeFood($food);
+
+        // Upload gambar baru
         if ($request->hasFile('image')) {
 
             $imagePath = $request->file('image')
                 ->store('foods', 'public');
 
-            $food->image = $imagePath;
+        } else {
+
+            $imagePath = $food->image;
+
         }
 
-        // Update data makanan
+        // Update makanan
         $food->update([
 
             'title' => $request->title,
@@ -137,6 +194,8 @@ class FoodController extends Controller
             'quantity' => $request->quantity,
 
             'expired_at' => $request->expired_at,
+
+            'image' => $imagePath,
 
             'address' => $request->address,
 
@@ -156,10 +215,31 @@ class FoodController extends Controller
      */
     public function destroy(Food $food)
     {
+        $this->authorizeFood($food);
+
         $food->delete();
 
         return redirect()
             ->route('foods.index')
             ->with('success', 'Makanan berhasil dihapus');
+    }
+
+    /**
+     * Authorization ownership
+     */
+    private function authorizeFood(Food $food)
+    {
+        if (
+
+            auth()->user()->role !== 'admin'
+            &&
+
+            $food->user_id !== auth()->id()
+
+        ) {
+
+            abort(403, 'Akses ditolak');
+
+        }
     }
 }

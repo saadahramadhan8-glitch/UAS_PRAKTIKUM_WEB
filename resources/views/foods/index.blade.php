@@ -45,6 +45,172 @@
                 placeholder="Cari makanan..."
                 class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Daftar Makanan
+            </h1>
+
+            <p class="text-gray-500 mt-1">
+                Kelola dan lihat daftar makanan tersedia
+            </p>
+
+        </div>
+
+        @if(
+            auth()->user()->role === 'admin'
+            ||
+            auth()->user()->role === 'penyedia'
+        )
+
+            <a
+                href="{{ route('foods.create') }}"
+                class="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg shadow transition"
+            >
+                + Tambah Makanan
+            </a>
+
+        @endif
+
+    </div>
+
+    {{-- Flash Message --}}
+    @if(session('success'))
+
+        <div
+            class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg mb-6"
+        >
+            {{ session('success') }}
+        </div>
+
+    @endif
+
+    {{-- Food List --}}
+    @forelse($foods as $food)
+
+        <div
+            class="bg-white rounded-2xl shadow-md overflow-hidden mb-6"
+        >
+
+            <div class="md:flex">
+
+                {{-- IMAGE --}}
+                <div class="md:w-1/3">
+
+                    @if($food->image)
+
+                        <img
+                            src="{{ asset('storage/' . $food->image) }}"
+                            class="w-full h-full object-cover"
+                        >
+
+                    @else
+
+                        <div
+                            class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500"
+                        >
+                            Tidak ada gambar
+                        </div>
+
+                    @endif
+
+                </div>
+
+                {{-- CONTENT --}}
+                <div class="p-6 flex-1">
+
+                    <div class="flex items-start justify-between">
+
+                        <div>
+
+                            <h2 class="text-2xl font-bold text-gray-800">
+                                {{ $food->title }}
+                            </h2>
+
+                            <p class="text-gray-500 mt-2">
+                                {{ $food->description }}
+                            </p>
+
+                        </div>
+
+                        <span
+                            class="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full"
+                        >
+                            {{ $food->status }}
+                        </span>
+
+                    </div>
+
+                    <div class="mt-4 space-y-2 text-gray-600">
+
+                        <p>
+                            <span class="font-semibold">
+                                Jumlah:
+                            </span>
+
+                            {{ $food->quantity }}
+                        </p>
+
+                        <p>
+                            <span class="font-semibold">
+                                Kadaluarsa:
+                            </span>
+
+                            {{ $food->expired_at }}
+                        </p>
+
+                    </div>
+
+                    {{-- ACTION BUTTON --}}
+                    <div class="mt-6 flex flex-wrap gap-3">
+
+                        {{-- DETAIL --}}
+                        <a
+                            href="{{ route('foods.show', $food->id) }}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                        >
+                            Detail
+                        </a>
+
+                        {{-- EDIT & DELETE --}}
+                        @if(
+                            auth()->user()->role === 'admin'
+                            ||
+                            auth()->user()->id === $food->user_id
+                        )
+
+                            <a
+                                href="{{ route('foods.edit', $food->id) }}"
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition"
+                            >
+                                Edit
+                            </a>
+
+                            <form
+                                action="{{ route('foods.destroy', $food->id) }}"
+                                method="POST"
+                            >
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                >
+                                    Hapus
+                                </button>
+
+                            </form>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -55,6 +221,19 @@
                 name="status"
                 class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
+        <div
+            class="bg-white rounded-2xl shadow-md p-10 text-center"
+        >
+
+            <h2 class="text-2xl font-bold text-gray-700">
+                Belum Ada Makanan
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Silakan tambahkan makanan terlebih dahulu
+            </p>
+
+        </div>
 
                 <option value="">
                     Semua Status
