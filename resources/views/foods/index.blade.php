@@ -153,7 +153,7 @@
                     <form
                         action="{{ route('foods.destroy', $food->id) }}"
                         method="POST"
-                        class="mt-3"
+                        class="mt-3 delete-form"
                     >
 
                         @csrf
@@ -203,5 +203,44 @@
     </div>
 
 @endif
+
+{{-- SWEET ALERT --}}
+<script>
+
+    document.querySelectorAll('.delete-form').forEach(form => {
+
+        form.addEventListener('submit', function(e) {
+
+            e.preventDefault();
+
+            Swal.fire({
+
+                title: 'Hapus makanan?',
+                text: 'Data yang dihapus tidak dapat dikembalikan.',
+                icon: 'warning',
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#64748B',
+
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    form.submit();
+
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
 
 @endsection
