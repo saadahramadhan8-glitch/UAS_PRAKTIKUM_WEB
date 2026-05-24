@@ -67,23 +67,47 @@
             <!-- MENU -->
             <nav class="flex-1 p-4 space-y-2">
 
+                {{-- DASHBOARD --}}
                 <a
                     href="/dashboard"
-                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
+                    class="
+                        block px-4 py-3 rounded-xl transition font-medium
+
+                        {{ request()->is('dashboard') || request()->is('*dashboard')
+                            ? 'bg-emerald-500 text-white shadow'
+                            : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                        }}
+                    "
                 >
                     Dashboard
                 </a>
 
+                {{-- DAFTAR MAKANAN --}}
                 <a
                     href="/foods"
-                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
+                    class="
+                        block px-4 py-3 rounded-xl transition font-medium
+
+                        {{ request()->is('foods') || request()->is('foods/*')
+                            ? 'bg-emerald-500 text-white shadow'
+                            : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                        }}
+                    "
                 >
                     Daftar Makanan
                 </a>
 
+                {{-- TAMBAH MAKANAN --}}
                 <a
                     href="/foods/create"
-                    class="block px-4 py-3 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition font-medium"
+                    class="
+                        block px-4 py-3 rounded-xl transition font-medium
+
+                        {{ request()->is('foods/create')
+                            ? 'bg-emerald-500 text-white shadow'
+                            : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                        }}
+                    "
                 >
                     Tambah Makanan
                 </a>
