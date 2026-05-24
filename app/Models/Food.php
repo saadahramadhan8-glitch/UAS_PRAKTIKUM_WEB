@@ -48,4 +48,9 @@ class Food extends Model
     {
         return $query->where('status', 'kadaluarsa');
     }
+
+    public function claims()
+    {
+        return $this->hasMany(Claim::class);
+    }
 }

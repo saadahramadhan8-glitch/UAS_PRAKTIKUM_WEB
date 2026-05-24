@@ -12,25 +12,36 @@ return new class extends Migration
 
             $table->id();
 
+            // makanan yang di claim
             $table->foreignId('food_id')
                 ->constrained('foods')
                 ->onDelete('cascade');
 
+            // user penerima
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
 
+            // jumlah makanan yang diambil
+            $table->integer('quantity');
+
+            // status claim
             $table->enum('status', [
+
                 'pending',
                 'disetujui',
                 'ditolak',
                 'selesai'
+
             ])->default('pending');
 
+            // tanggal claim
             $table->dateTime('claim_date');
 
+            // catatan tambahan
             $table->text('notes')->nullable();
 
+            // index status
             $table->index('status');
 
             $table->timestamps();

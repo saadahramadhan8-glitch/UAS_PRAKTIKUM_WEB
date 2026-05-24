@@ -12,6 +12,7 @@ class ClaimSeeder extends Seeder
         Claim::create([
             'food_id' => 3,
             'user_id' => 3,
+            'quantity' => 1,
             'status' => 'disetujui',
             'claim_date' => now(),
             'notes' => 'Akan diambil sore hari',

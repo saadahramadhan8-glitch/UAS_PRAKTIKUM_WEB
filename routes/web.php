@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\ClaimController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,27 +64,31 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/penyedia/dashboard', function () {
+Route::middleware(['auth', 'role:penyedia'])->group(function () {
 
-    $foods = \App\Models\Food::where('user_id', auth()->id());
+    Route::get('/penyedia/dashboard', function () {
 
-    return view('dashboard.penyedia', [
+        $foods = \App\Models\Food::where('user_id', auth()->id());
 
-        'totalFoods' => $foods->count(),
+        return view('dashboard.penyedia', [
 
-        'availableFoods' => (clone $foods)
-            ->where('status', 'available')
-            ->count(),
+            'totalFoods' => $foods->count(),
 
-        'claimedFoods' => (clone $foods)
-            ->where('status', 'claimed')
-            ->count(),
+            'availableFoods' => (clone $foods)
+                ->where('status', 'tersedia')
+                ->count(),
 
-        'expiredFoods' => (clone $foods)
-            ->where('status', 'expired')
-            ->count(),
+            'claimedFoods' => (clone $foods)
+                ->where('status', 'claimed')
+                ->count(),
 
-    ]);
+            'expiredFoods' => (clone $foods)
+                ->where('status', 'expired')
+                ->count(),
+
+        ]);
+
+    });
 
 });
 
@@ -127,12 +132,41 @@ Route::middleware(['auth', 'role:kurir'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
+    /*
+    |--------------------------------------------------------------------------
+    | FOOD RESOURCE
+    |--------------------------------------------------------------------------
+    */
+
     Route::resource('foods', FoodController::class);
 
+    /*
+    |--------------------------------------------------------------------------
+    | AVAILABLE FOOD
+    |--------------------------------------------------------------------------
+    */
+
     Route::get(
+
         '/available-foods',
+
         [FoodController::class, 'availableFoods']
+
     )->name('foods.available');
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLAIM ROUTE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+
+        '/foods/{food}/claim',
+
+        [ClaimController::class, 'store']
+
+    )->name('claims.store');
 
 });
 

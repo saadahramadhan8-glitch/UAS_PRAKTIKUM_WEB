@@ -34,7 +34,9 @@
 
                 @else
 
-                    <div class="h-full min-h-[400px] flex items-center justify-center text-slate-400 text-xl">
+                    <div
+                        class="h-full min-h-[400px] flex items-center justify-center text-slate-400 text-xl"
+                    >
 
                         Tidak ada gambar
 
@@ -53,7 +55,7 @@
                     <span class="
                         px-4 py-2 rounded-full text-sm font-semibold
 
-                        @if($food->status == 'available')
+                        @if($food->status == 'tersedia')
                             bg-emerald-100 text-emerald-700
 
                         @elseif($food->status == 'claimed')
@@ -91,7 +93,9 @@
                 <div class="space-y-5 mb-8">
 
                     {{-- QUANTITY --}}
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div
+                        class="flex justify-between items-center border-b border-slate-100 pb-4"
+                    >
 
                         <span class="text-slate-500">
                             Jumlah
@@ -104,20 +108,26 @@
                     </div>
 
                     {{-- EXPIRED --}}
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div
+                        class="flex justify-between items-center border-b border-slate-100 pb-4"
+                    >
 
                         <span class="text-slate-500">
                             Batas Konsumsi
                         </span>
 
                         <span class="font-semibold text-slate-800">
-                            {{ $food->expired_at }}
+
+                            {{ \Carbon\Carbon::parse($food->expired_at)->format('d M Y H:i') }}
+
                         </span>
 
                     </div>
 
                     {{-- ADDRESS --}}
-                    <div class="flex justify-between items-start border-b border-slate-100 pb-4 gap-6">
+                    <div
+                        class="flex justify-between items-start border-b border-slate-100 pb-4 gap-6"
+                    >
 
                         <span class="text-slate-500">
                             Alamat
@@ -130,7 +140,9 @@
                     </div>
 
                     {{-- LATITUDE --}}
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div
+                        class="flex justify-between items-center border-b border-slate-100 pb-4"
+                    >
 
                         <span class="text-slate-500">
                             Latitude
@@ -143,7 +155,9 @@
                     </div>
 
                     {{-- LONGITUDE --}}
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div
+                        class="flex justify-between items-center border-b border-slate-100 pb-4"
+                    >
 
                         <span class="text-slate-500">
                             Longitude
@@ -157,192 +171,109 @@
 
                 </div>
 
-                {{-- ACTION BUTTONS --}}
-                <div class="flex flex-col sm:flex-row gap-4">
+                {{-- ACTION --}}
+                <div class="flex flex-col gap-4">
 
-                    {{-- EDIT --}}
-                    <a
-                        href="{{ route('foods.edit', $food->id) }}"
-                        class="flex-1 bg-orange-400 hover:bg-orange-500 text-white text-center py-3 rounded-2xl transition"
-                    >
-                        Edit Makanan
-                    </a>
+                    {{-- ADMIN / OWNER --}}
+                    @if(
+                        auth()->user()->role === 'admin'
+                        ||
+                        auth()->user()->id === $food->user_id
+                    )
 
-                    {{-- DELETE --}}
-                    <form
-                        action="{{ route('foods.destroy', $food->id) }}"
-                        method="POST"
-                        class="flex-1 delete-form"
-                    >
+                        <div class="flex gap-4">
 
-                        @csrf
-                        @method('DELETE')
+                            {{-- EDIT --}}
+                            <a
+                                href="{{ route('foods.edit', $food->id) }}"
+                                class="flex-1 bg-orange-400 hover:bg-orange-500 text-white text-center py-3 rounded-2xl transition"
+                            >
+                                Edit Makanan
+                            </a>
 
-                        <button
-                            type="submit"
-                            class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-2xl transition"
-                        >
-                            Hapus Makanan
-                        </button>
+                            {{-- DELETE --}}
+                            <form
+                                action="{{ route('foods.destroy', $food->id) }}"
+                                method="POST"
+                                class="flex-1 delete-form"
+                            >
 
-                    </form>
-    <div class="max-w-5xl mx-auto">
+                                @csrf
+                                @method('DELETE')
 
-        {{-- HEADER --}}
-        <div class="mb-8 flex items-center justify-between">
+                                <button
+                                    type="submit"
+                                    class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-2xl transition"
+                                >
+                                    Hapus Makanan
+                                </button>
 
-            <div>
+                            </form>
 
-                <h1 class="text-3xl font-bold text-gray-800">
-                    Detail Makanan
-                </h1>
-
-                <p class="text-gray-500 mt-2">
-                    Informasi lengkap makanan tersedia
-                </p>
-
-            </div>
-
-            <a
-                href="{{ route('foods.index') }}"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-3 rounded-xl transition"
-            >
-                Kembali
-            </a>
-
-        </div>
-
-        {{-- CARD --}}
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-
-            <div class="md:flex">
-
-                {{-- IMAGE --}}
-                <div class="md:w-1/2 bg-gray-100">
-
-                    @if($food->image)
-
-                        <img
-                            src="{{ asset('storage/' . $food->image) }}"
-                            class="w-full h-full object-cover"
-                        >
-
-                    @else
-
-                        <div
-                            class="w-full h-full flex items-center justify-center text-gray-500 p-10"
-                        >
-                            Tidak ada gambar
                         </div>
 
                     @endif
 
-                </div>
+                    {{-- CLAIM FORM --}}
+                    @if(
+                        auth()->user()->role === 'penerima'
+                        &&
+                        $food->status === 'tersedia'
+                    )
 
-                {{-- CONTENT --}}
-                <div class="p-8 flex-1">
-
-                    <div class="flex items-start justify-between">
-
-                        <h2 class="text-3xl font-bold text-gray-800">
-                            {{ $food->title }}
-                        </h2>
-
-                        <span
-                            class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium"
+                        <form
+                            action="{{ route('claims.store', $food->id) }}"
+                            method="POST"
+                            class="space-y-4"
                         >
-                            {{ $food->status }}
-                        </span>
 
-                    </div>
+                            @csrf
 
-                    <div class="mt-6 space-y-5">
+                            {{-- QUANTITY --}}
+                            <div>
 
-                        {{-- DESCRIPTION --}}
-                        <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                                    Jumlah Claim
+                                </label>
 
-                            <h3 class="font-semibold text-gray-700 mb-2">
-                                Deskripsi
-                            </h3>
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    min="1"
+                                    max="{{ $food->quantity }}"
+                                    required
+                                    class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                >
 
-                            <p class="text-gray-600 leading-relaxed">
-                                {{ $food->description }}
-                            </p>
+                            </div>
 
-                        </div>
+                            {{-- NOTES --}}
+                            <div>
 
-                        {{-- QUANTITY --}}
-                        <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                                    Catatan
+                                </label>
 
-                            <h3 class="font-semibold text-gray-700 mb-2">
-                                Jumlah
-                            </h3>
+                                <textarea
+                                    name="notes"
+                                    rows="3"
+                                    placeholder="Tambahkan catatan..."
+                                    class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                ></textarea>
 
-                            <p class="text-gray-600">
-                                {{ $food->quantity }}
-                            </p>
+                            </div>
 
-                        </div>
-
-                        {{-- ADDRESS --}}
-                        <div>
-
-                            <h3 class="font-semibold text-gray-700 mb-2">
-                                Alamat
-                            </h3>
-
-                            <p class="text-gray-600">
-                                {{ $food->address }}
-                            </p>
-
-                        </div>
-
-                        {{-- EXPIRED --}}
-                        <div>
-
-                            <h3 class="font-semibold text-gray-700 mb-2">
-                                Batas Konsumsi
-                            </h3>
-
-                            <p class="text-gray-600">
-                                {{ $food->expired_at }}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    {{-- ACTION --}}
-                    <div class="mt-8 flex flex-wrap gap-4">
-
-                        {{-- ADMIN / OWNER --}}
-                        @if(
-                            auth()->user()->role === 'admin'
-                            ||
-                            auth()->user()->id === $food->user_id
-                        )
-
-                            <a
-                                href="{{ route('foods.edit', $food->id) }}"
-                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-xl transition"
-                            >
-                                Edit
-                            </a>
-
-                        @endif
-
-                        {{-- PENERIMA --}}
-                        @if(auth()->user()->role === 'penerima')
-
+                            {{-- BUTTON --}}
                             <button
-                                class="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl transition"
+                                type="submit"
+                                class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl transition"
                             >
                                 Claim Makanan
                             </button>
 
-                        @endif
+                        </form>
 
-                    </div>
+                    @endif
 
                 </div>
 

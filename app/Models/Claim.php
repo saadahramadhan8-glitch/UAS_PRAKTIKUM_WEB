@@ -6,73 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class Claim extends Model
 {
-    /*
-    |--------------------------------------------------------------------------
-    | TABLE
-    |--------------------------------------------------------------------------
-    */
-
-    protected $table = 'claims';
-
-    /*
-    |--------------------------------------------------------------------------
-    | MASS ASSIGNABLE
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Mass assignable fields
+     */
     protected $fillable = [
+
+        // relasi makanan
         'food_id',
+
+        // user penerima
         'user_id',
+
+        // jumlah claim
+        'quantity',
+
+        // status claim
         'status',
+
+        // tanggal claim
         'claim_date',
+
+        // catatan tambahan
         'notes'
+
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATION
-    |--------------------------------------------------------------------------
-    */
-
-    // Claim milik satu makanan
+    /**
+     * Relasi ke makanan
+     */
     public function food()
     {
         return $this->belongsTo(Food::class);
     }
 
-    // Claim milik satu user
+    /**
+     * Relasi ke user penerima
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Claim memiliki satu delivery
-    public function delivery()
-    {
-        return $this->hasOne(Delivery::class);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | QUERY SCOPE
-    |--------------------------------------------------------------------------
-    */
-
-    // Claim pending
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
-    }
-
-    // Claim disetujui
-    public function scopeApproved($query)
-    {
-        return $query->where('status', 'disetujui');
-    }
-
-    // Claim selesai
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', 'selesai');
     }
 }
