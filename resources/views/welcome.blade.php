@@ -46,10 +46,6 @@
             Mulai Sekarang
         </a>
 
-        <a href="#fitur"
-           class="border border-emerald-600 text-emerald-600 px-6 py-3 rounded-lg hover:bg-emerald-50">
-            Lihat Fitur
-        </a>
     </div>
 </section>
 
@@ -73,7 +69,7 @@
     <div class="bg-white p-6 rounded-xl shadow-sm">
         <h3 class="font-semibold text-lg text-emerald-600">🚚 Pengantaran</h3>
         <p class="text-sm text-slate-500 mt-2">
-            Kurir mengantarkan makanan hingga sampai tujuan.
+            Makanan bisa dikirimkan melalui kurir.
         </p>
     </div>
 
