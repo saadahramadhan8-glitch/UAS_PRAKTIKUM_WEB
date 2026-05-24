@@ -55,14 +55,12 @@ return new class extends Migration
             */
 
             $table->enum('status', [
-                'pending_verification',
+
                 'tersedia',
-                'diklaim',
-                'diproses',
-                'diantar',
-                'selesai',
+                'habis',
                 'kadaluarsa'
-            ])->default('pending_verification');
+
+            ])->default('tersedia');
 
             /*
             |--------------------------------------------------------------------------

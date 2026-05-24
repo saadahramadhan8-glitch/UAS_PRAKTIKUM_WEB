@@ -176,7 +176,15 @@
                 </div>
 
                 {{-- USER --}}
-                <div class="flex items-center gap-4">
+                <a
+                    href="{{ route('profile.edit') }}"
+                    class="
+                        flex items-center gap-4
+                        hover:bg-slate-100
+                        px-4 py-2 rounded-2xl
+                        transition
+                    "
+                >
 
                     <div class="text-right hidden sm:block">
 
@@ -192,12 +200,19 @@
 
                     {{-- AVATAR --}}
                     <div
-                        class="w-11 h-11 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow"
+                        class="
+                            w-11 h-11 rounded-full
+                            bg-emerald-500 text-white
+                            flex items-center justify-center
+                            font-bold text-lg shadow
+                        "
                     >
+
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+
                     </div>
 
-                </div>
+                </a>
 
             </header>
 

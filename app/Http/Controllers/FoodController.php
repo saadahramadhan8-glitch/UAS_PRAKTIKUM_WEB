@@ -17,47 +17,70 @@ class FoodController extends Controller
         // Query dasar
         $query = Food::query();
 
-        // ROLE FILTER
-        if (auth()->user()->role !== 'admin') {
+        /*
+        |--------------------------------------------------------------------------
+        | ROLE FILTER
+        |--------------------------------------------------------------------------
+        */
 
+        // ADMIN melihat semua makanan
+        if (auth()->user()->role === 'admin') {
 
-            // Penyedia hanya melihat miliknya
+            // tidak perlu filter
+
+        }
+
+        // PENYEDIA hanya melihat makanan miliknya
+        elseif (auth()->user()->role === 'penyedia') {
+
             $query->where('user_id', auth()->id());
 
         }
 
-        // Penyedia melihat makanan miliknya
-        elseif (auth()->user()->role === 'penyedia') {
-
-            $foods = Food::where('user_id', auth()->id())
-                ->where('status', 'tersedia')
-                ->latest()
-                ->get();
-
-        }
-
-        // Penerima & kurir melihat makanan tersedia
+        // PENERIMA & KURIR melihat makanan tersedia
         else {
 
-            $foods = Food::where('status', 'tersedia')
-                ->latest()
-                ->get();
+            $query->where('status', 'tersedia')
+                ->where('quantity', '>', 0);
 
         }
 
-        // SEARCH
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->search) {
 
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $query->where(
+
+                'title',
+                'like',
+                '%' . $request->search . '%'
+
+            );
+
         }
 
-        // FILTER STATUS
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER STATUS
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->status) {
 
             $query->where('status', $request->status);
+
         }
 
-        // PAGINATION
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
         $foods = $query
             ->latest()
             ->paginate(6)
@@ -132,6 +155,7 @@ class FoodController extends Controller
 
             'image' => $imagePath,
 
+            // STATUS DEFAULT
             'status' => 'tersedia',
 
             'address' => $request->address,

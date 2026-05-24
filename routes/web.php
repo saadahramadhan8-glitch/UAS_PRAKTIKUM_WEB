@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
     return view('welcome');
+
 });
 
 /*
@@ -72,18 +74,42 @@ Route::middleware(['auth', 'role:penyedia'])->group(function () {
 
         return view('dashboard.penyedia', [
 
+            /*
+            |--------------------------------------------------------------------------
+            | TOTAL MAKANAN
+            |--------------------------------------------------------------------------
+            */
+
             'totalFoods' => $foods->count(),
+
+            /*
+            |--------------------------------------------------------------------------
+            | MAKANAN TERSEDIA
+            |--------------------------------------------------------------------------
+            */
 
             'availableFoods' => (clone $foods)
                 ->where('status', 'tersedia')
                 ->count(),
 
+            /*
+            |--------------------------------------------------------------------------
+            | MAKANAN HABIS
+            |--------------------------------------------------------------------------
+            */
+
             'claimedFoods' => (clone $foods)
-                ->where('status', 'claimed')
+                ->where('status', 'habis')
                 ->count(),
 
+            /*
+            |--------------------------------------------------------------------------
+            | MAKANAN KADALUARSA
+            |--------------------------------------------------------------------------
+            */
+
             'expiredFoods' => (clone $foods)
-                ->where('status', 'expired')
+                ->where('status', 'kadaluarsa')
                 ->count(),
 
         ]);
@@ -167,6 +193,20 @@ Route::middleware(['auth'])->group(function () {
         [ClaimController::class, 'store']
 
     )->name('claims.store');
+
+        /*
+    |--------------------------------------------------------------------------
+    | MY CLAIMS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+
+        '/my-claims',
+
+        [ClaimController::class, 'myClaims']
+
+    )->name('claims.my');
 
 });
 

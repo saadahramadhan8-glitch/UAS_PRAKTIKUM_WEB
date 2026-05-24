@@ -16,6 +16,32 @@
 
     </div>
 
+    {{-- SUCCESS MESSAGE --}}
+    @if(session('success'))
+
+        <div
+            class="mb-6 bg-emerald-100 border border-emerald-200 text-emerald-700 px-5 py-4 rounded-2xl"
+        >
+
+            {{ session('success') }}
+
+        </div>
+
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if(session('error'))
+
+        <div
+            class="mb-6 bg-red-100 border border-red-200 text-red-700 px-5 py-4 rounded-2xl"
+        >
+
+            {{ session('error') }}
+
+        </div>
+
+    @endif
+
     {{-- CARD --}}
     <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
 
@@ -56,20 +82,25 @@
                         px-4 py-2 rounded-full text-sm font-semibold
 
                         @if($food->status == 'tersedia')
+
                             bg-emerald-100 text-emerald-700
 
-                        @elseif($food->status == 'claimed')
-                            bg-orange-100 text-orange-500
+                        @elseif($food->status == 'habis')
 
-                        @elseif($food->status == 'pending_verification')
-                            bg-yellow-100 text-yellow-600
+                            bg-red-100 text-red-500
+
+                        @elseif($food->status == 'kadaluarsa')
+
+                            bg-yellow-100 text-yellow-700
 
                         @else
-                            bg-red-100 text-red-500
+
+                            bg-slate-100 text-slate-600
+
                         @endif
                     ">
 
-                        {{ ucfirst(str_replace('_', ' ', $food->status)) }}
+                        {{ ucfirst($food->status) }}
 
                     </span>
 
@@ -219,6 +250,8 @@
                         auth()->user()->role === 'penerima'
                         &&
                         $food->status === 'tersedia'
+                        &&
+                        $food->quantity > 0
                     )
 
                         <form
@@ -244,6 +277,16 @@
                                     required
                                     class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                 >
+
+                                @error('quantity')
+
+                                    <p class="text-red-500 text-sm mt-2">
+
+                                        {{ $message }}
+
+                                    </p>
+
+                                @enderror
 
                             </div>
 
@@ -275,6 +318,19 @@
 
                     @endif
 
+                    {{-- STATUS HABIS --}}
+                    @if($food->status === 'habis')
+
+                        <div
+                            class="bg-red-100 border border-red-200 text-red-600 px-5 py-4 rounded-2xl"
+                        >
+
+                            Makanan sudah habis di-claim.
+
+                        </div>
+
+                    @endif
+
                 </div>
 
             </div>
@@ -298,14 +354,17 @@
 
                 title: 'Hapus makanan?',
                 text: 'Data yang dihapus tidak dapat dikembalikan.',
+
                 icon: 'warning',
 
                 showCancelButton: true,
 
                 confirmButtonColor: '#EF4444',
+
                 cancelButtonColor: '#64748B',
 
                 confirmButtonText: 'Ya, Hapus',
+
                 cancelButtonText: 'Batal'
 
             }).then((result) => {
