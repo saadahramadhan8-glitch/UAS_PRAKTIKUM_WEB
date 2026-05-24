@@ -55,6 +55,13 @@
         </form>
 
         <!-- FOOTER -->
+        <p class="text-center text-sm text-slate-500 mt-6">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-emerald-600 font-semibold hover:underline">
+                Register
+            </a>
+        </p>
+
         <p class="text-center text-xs text-slate-400 mt-6">
             © PanganLokal System
         </p>
