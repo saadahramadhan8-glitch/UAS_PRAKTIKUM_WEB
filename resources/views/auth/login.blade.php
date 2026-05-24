@@ -1,54 +1,74 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PanganLokal</title>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+
+<div class="min-h-screen flex items-center justify-center px-6">
+
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
+
+        <!-- HEADER -->
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-emerald-600">🌿 PanganLokal</h1>
+            <p class="text-sm text-slate-500 mt-1">Login ke sistem</p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- FORM -->
+        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- EMAIL -->
+            <div>
+                <label class="text-sm font-medium">Email</label>
+                <input type="email" name="email"
+                       class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                       placeholder="email@domain.com" required>
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- PASSWORD -->
+            <div>
+                <label class="text-sm font-medium">Password</label>
+                <input type="password" name="password"
+                       class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                       placeholder="••••••••" required>
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <!-- BUTTON -->
+            <button type="submit"
+                    class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition">
+                Login
+            </button>
+        </form>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-        
-            <a
-                href="{{ route('register') }}"
-                class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-                Belum punya akun?
+        <!-- FOOTER -->
+        <p class="text-center text-sm text-slate-500 mt-6">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-emerald-600 font-semibold hover:underline">
+                Register
             </a>
+        </p>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <p class="text-center text-xs text-slate-400 mt-6">
+            © PanganLokal System
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
