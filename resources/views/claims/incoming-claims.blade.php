@@ -9,13 +9,13 @@
 
         <h1 class="text-3xl font-bold text-slate-800">
 
-            History Claim
+            Claim Masuk
 
         </h1>
 
         <p class="text-slate-500 mt-1">
 
-            Daftar makanan yang pernah kamu claim.
+            Daftar claim makanan dari penerima.
 
         </p>
 
@@ -99,6 +99,16 @@
                             <p>
 
                                 <span class="font-semibold text-slate-800">
+                                    Penerima:
+                                </span>
+
+                                {{ $claim->user->name }}
+
+                            </p>
+
+                            <p>
+
+                                <span class="font-semibold text-slate-800">
                                     Quantity:
                                 </span>
 
@@ -132,20 +142,60 @@
 
                         </div>
 
-                        {{-- DETAIL BUTTON --}}
-                        @if($claim->food)
+                        {{-- ACTION --}}
+                        @if($claim->status == 'pending')
 
-                            <a
-                                href="{{ route('foods.show', $claim->food->id) }}"
-                                class="
-                                    block mt-5 text-center
-                                    bg-emerald-500 hover:bg-emerald-600
-                                    text-white py-3 rounded-2xl
-                                    transition
-                                "
-                            >
-                                Lihat Detail
-                            </a>
+                            <div class="flex gap-3 mt-5">
+
+                                {{-- APPROVE --}}
+                                <form
+                                    action="{{ route('claims.approve', $claim->id) }}"
+                                    method="POST"
+                                    class="flex-1"
+                                >
+
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <button
+                                        type="submit"
+                                        class="
+                                            w-full bg-emerald-500
+                                            hover:bg-emerald-600
+                                            text-white py-3 rounded-2xl
+                                            transition
+                                        "
+                                    >
+                                        Setujui
+                                    </button>
+
+                                </form>
+
+                                {{-- REJECT --}}
+                                <form
+                                    action="{{ route('claims.reject', $claim->id) }}"
+                                    method="POST"
+                                    class="flex-1"
+                                >
+
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <button
+                                        type="submit"
+                                        class="
+                                            w-full bg-red-500
+                                            hover:bg-red-600
+                                            text-white py-3 rounded-2xl
+                                            transition
+                                        "
+                                    >
+                                        Tolak
+                                    </button>
+
+                                </form>
+
+                            </div>
 
                         @endif
 
@@ -187,7 +237,7 @@
 
             <p class="text-slate-500 max-w-xl mx-auto">
 
-                Kamu belum pernah melakukan claim makanan.
+                Saat ini belum ada claim masuk.
 
             </p>
 

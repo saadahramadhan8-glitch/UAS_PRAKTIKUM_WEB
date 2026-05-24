@@ -99,6 +99,44 @@
                     Daftar Makanan
                 </a>
 
+                {{-- HISTORY CLAIM --}}
+                @if(auth()->user()->role === 'penerima')
+
+                    <a
+                        href="{{ route('claims.my') }}"
+                        class="
+                            block px-4 py-3 rounded-xl transition font-medium
+
+                            {{ request()->is('my-claims')
+                                ? 'bg-emerald-500 text-white shadow'
+                                : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                            }}
+                        "
+                    >
+                        History Claim
+                    </a>
+
+                @endif
+
+                {{-- CLAIM MASUK --}}
+                @if(auth()->user()->role === 'penyedia')
+
+                    <a
+                        href="{{ route('claims.incoming') }}"
+                        class="
+                            block px-4 py-3 rounded-xl transition font-medium
+
+                            {{ request()->is('incoming-claims')
+                                ? 'bg-emerald-500 text-white shadow'
+                                : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                            }}
+                        "
+                    >
+                        Claim Masuk
+                    </a>
+
+                @endif
+
                 {{-- ADMIN & PENYEDIA --}}
                 @if(
                     auth()->user()->role === 'admin'

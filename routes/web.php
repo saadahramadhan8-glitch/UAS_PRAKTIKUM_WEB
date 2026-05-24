@@ -194,7 +194,7 @@ Route::middleware(['auth'])->group(function () {
 
     )->name('claims.store');
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | MY CLAIMS
     |--------------------------------------------------------------------------
@@ -207,6 +207,48 @@ Route::middleware(['auth'])->group(function () {
         [ClaimController::class, 'myClaims']
 
     )->name('claims.my');
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOMING CLAIMS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+
+        '/incoming-claims',
+
+        [ClaimController::class, 'incomingClaims']
+
+    )->name('claims.incoming');
+
+    /*
+    |--------------------------------------------------------------------------
+    | APPROVE CLAIM
+    |--------------------------------------------------------------------------
+    */
+
+    Route::patch(
+
+        '/claims/{claim}/approve',
+
+        [ClaimController::class, 'approve']
+
+    )->name('claims.approve');
+
+    /*
+    |--------------------------------------------------------------------------
+    | REJECT CLAIM
+    |--------------------------------------------------------------------------
+    */
+
+    Route::patch(
+
+        '/claims/{claim}/reject',
+
+        [ClaimController::class, 'reject']
+
+    )->name('claims.reject');
 
 });
 
