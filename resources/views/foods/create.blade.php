@@ -2,138 +2,244 @@
 
 @section('content')
 
-    <h1>Tambah Makanan</h1>
+<div class="max-w-4xl mx-auto">
 
-    <form
-        action="{{ route('foods.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-    >
+    {{-- HEADER --}}
+    <div class="mb-6">
 
-        @csrf
+        <h1 class="text-3xl font-bold text-slate-800">
+            Tambah Makanan
+        </h1>
 
-        <div>
-            <label>Judul</label>
-            <br>
+        <p class="text-slate-500 mt-1">
+            Tambahkan makanan untuk dibagikan kepada penerima.
+        </p>
 
-            <input
-                type="text"
-                name="title"
-                value="{{ old('title') }}"
-            >
+    </div>
 
-            @error('title')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+    {{-- FORM CARD --}}
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
 
-        <br>
+        <form
+            action="{{ route('foods.store') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="space-y-6"
+        >
 
-        <div>
-            <label>Deskripsi</label>
-            <br>
+            @csrf
 
-            <textarea name="description">{{ old('description') }}</textarea>
+            {{-- TITLE --}}
+            <div>
 
-            @error('description')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                    Judul Makanan
+                </label>
 
-        <br>
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ old('title') }}"
+                    placeholder="Contoh: Nasi Goreng"
+                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
 
-        <div>
-            <label>Jumlah</label>
-            <br>
+                @error('title')
 
-            <input
-                type="number"
-                name="quantity"
-                value="{{ old('quantity') }}"
-            >
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </p>
 
-            @error('quantity')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+                @enderror
 
-        <br>
+            </div>
 
-        <div>
-            <label>Batas Konsumsi</label>
-            <br>
+            {{-- DESCRIPTION --}}
+            <div>
 
-            <input
-                type="datetime-local"
-                name="expired_at"
-            >
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                    Deskripsi
+                </label>
 
-            @error('expired_at')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+                <textarea
+                    name="description"
+                    rows="5"
+                    placeholder="Deskripsikan makanan..."
+                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >{{ old('description') }}</textarea>
 
-        <br>
+                @error('description')
 
-        <div>
-            <label>Foto Makanan</label>
-            <br>
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </p>
 
-            <input
-                type="file"
-                name="image"
-            >
+                @enderror
 
-            @error('image')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+            </div>
 
-        <br>
+            {{-- GRID --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div>
-            <label>Alamat</label>
-            <br>
+                {{-- QUANTITY --}}
+                <div>
 
-            <textarea name="address">{{ old('address') }}</textarea>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Jumlah
+                    </label>
 
-            @error('address')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="{{ old('quantity') }}"
+                        placeholder="Contoh: 10"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
 
-        <br>
+                    @error('quantity')
 
-        <div>
-            <label>Latitude</label>
-            <br>
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
 
-            <input
-                type="text"
-                name="latitude"
-                value="{{ old('latitude') }}"
-            >
-        </div>
+                    @enderror
 
-        <br>
+                </div>
 
-        <div>
-            <label>Longitude</label>
-            <br>
+                {{-- EXPIRED --}}
+                <div>
 
-            <input
-                type="text"
-                name="longitude"
-                value="{{ old('longitude') }}"
-            >
-        </div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Batas Konsumsi
+                    </label>
 
-        <br>
+                    <input
+                        type="datetime-local"
+                        name="expired_at"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
 
-        <button type="submit">
-            Simpan
-        </button>
+                    @error('expired_at')
 
-    </form>
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+                </div>
+
+            </div>
+
+            {{-- IMAGE --}}
+            <div>
+
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                    Foto Makanan
+                </label>
+
+                <input
+                    type="file"
+                    name="image"
+                    class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50"
+                >
+
+                @error('image')
+
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </p>
+
+                @enderror
+
+            </div>
+
+            {{-- ADDRESS --}}
+            <div>
+
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                    Alamat
+                </label>
+
+                <textarea
+                    name="address"
+                    rows="4"
+                    placeholder="Masukkan alamat lokasi makanan..."
+                    class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >{{ old('address') }}</textarea>
+
+                @error('address')
+
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </p>
+
+                @enderror
+
+            </div>
+
+            {{-- LOCATION --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {{-- LATITUDE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Latitude
+                    </label>
+
+                    <input
+                        type="text"
+                        name="latitude"
+                        value="{{ old('latitude') }}"
+                        placeholder="-0.123456"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+
+                </div>
+
+                {{-- LONGITUDE --}}
+                <div>
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Longitude
+                    </label>
+
+                    <input
+                        type="text"
+                        name="longitude"
+                        value="{{ old('longitude') }}"
+                        placeholder="119.123456"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+
+                </div>
+
+            </div>
+
+            {{-- BUTTON --}}
+            <div class="flex justify-end gap-3 pt-4">
+
+                <a
+                    href="{{ route('foods.index') }}"
+                    class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition"
+                >
+                    Batal
+                </a>
+
+                <button
+                    type="submit"
+                    class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl transition shadow-sm"
+                >
+                    Simpan Makanan
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 @endsection
